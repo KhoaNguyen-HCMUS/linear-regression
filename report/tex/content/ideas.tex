@@ -1,0 +1,164 @@
+\section{Ý tưởng thực hiện}
+\subsection{Thay đổi độ sáng}
+Ý tưởng thực hiện hàm thay đổi độ sáng là cộng hoặc trừ một giá trị bù vào từng pixel của ảnh để tăng hoặc giảm độ sáng. Giá trị sau khi thay đổi được giới hạn trong khoảng hợp lệ để đảm bảo tính chính xác.
+
+\subsection{Thay đổi độ tương phản}
+Ý tưởng của hàm điều chỉnh độ tương phản là sử dụng giá trị trung bình của toàn bộ các pixel trong ảnh làm điểm tham chiếu. Dựa trên giá trị này, các pixel được điều chỉnh để tăng hoặc giảm khoảng cách của chúng so với giá trị trung bình. Hệ số tương phản được sử dụng để kiểm soát mức độ thay đổi: giá trị lớn hơn 1 làm tăng độ tương phản, trong khi giá trị nhỏ hơn 1 làm giảm độ tương phản.
+
+Các giá trị pixel sau khi điều chỉnh được giới hạn trong phạm vi từ 0 đến 255 để đảm bảo không vượt quá giới hạn hợp lệ. Phương pháp này giúp phân bổ thay đổi một cách đồng đều giữa các vùng sáng và tối, giữ được chi tiết của ảnh và đảm bảo sự cân bằng màu sắc sau khi xử lý.
+
+\subsection{Lật ảnh ngang}
+Ý tưởng của hàm lật ảnh ngang là đảo ngược thứ tự các pixel theo chiều ngang (trái sang phải). Điều này được thực hiện bằng cách thay đổi thứ tự cột của ma trận ảnh, trong khi giữ nguyên thứ tự hàng.
+
+\subsection{Lật ảnh dọc}
+Ý tưởng của hàm lật ảnh dọc là đảo ngược thứ tự các pixel theo chiều dọc (trên xuống dưới). Điều này được thực hiện bằng cách thay đổi thứ tự hàng của ma trận ảnh, trong khi giữ nguyên thứ tự cột.
+
+\subsection{Chuyển đổi ảnh sang grayscale}
+Ý tưởng của hàm chuyển đổi ảnh sang grayscale là sử dụng công thức chuẩn được tham chiếu từ tài liệu OpenCV \cite{opencv_color_conversions}. Công thức này tính toán giá trị độ sáng của từng pixel dựa trên các kênh màu RGB với các trọng số. Kết quả là một ảnh grayscale, trong đó mỗi pixel có cùng giá trị độ sáng trên cả ba kênh màu.
+
+\begin{equation}
+	Gray = 0.299 \cdot R + 0.587 \cdot G + 0.114 \cdot B
+\end{equation}
+
+
+Hệ số trong công thức chuyển đổi ảnh sang grayscale được xác định dựa trên cách mắt người cảm nhận độ sáng của các màu sắc. Kênh xanh lá (0.587) có hệ số lớn nhất vì mắt nhạy cảm nhất với màu này, kênh đỏ (0.299) có hệ số trung bình, và kênh xanh dương (0.114) có hệ số nhỏ nhất do mắt ít nhạy cảm với màu xanh dương hơn. Các hệ số này đảm bảo ảnh grayscale phản ánh chính xác độ sáng và giữ được chi tiết của ảnh gốc. Kết quả là một ảnh grayscale, phản ánh chính xác độ sáng tổng thể của ảnh gốc và giữ được các chi tiết quan trọng.
+
+\subsection{Chuyển đổi ảnh sang sepia}
+Ý tưởng của hàm chuyển đổi ảnh sang sepia là áp dụng một ma trận chuyển đổi màu sắc lên từng pixel của ảnh. Ma trận này được thiết kế để tạo ra hiệu ứng màu sắc đặc trưng của ảnh sepia, với tông màu nâu ấm và giảm độ bão hòa của các màu sắc. Công thức chuyển đổi được tham khảo từ tài liệu \cite{dyclassroom_sepia_conversion} và được áp dụng như sau:
+
+\begin{equation}
+	\begin{aligned}
+		Sepia_R & = 0.393 \cdot R + 0.769 \cdot G + 0.189 \cdot B \\
+		Sepia_G & = 0.349 \cdot R + 0.686 \cdot G + 0.168 \cdot B \\
+		Sepia_B & = 0.272 \cdot R + 0.534 \cdot G + 0.131 \cdot B
+	\end{aligned}
+\end{equation}
+
+Các giá trị sau khi chuyển đổi được giới hạn trong phạm vi từ 0 đến 255 để đảm bảo không vượt quá giới hạn hợp lệ. Kết quả là một ảnh sepia với tông màu cổ điển, mang lại cảm giác ấm áp và hoài cổ.
+
+\subsection{Làm mờ ảnh}
+Ý tưởng của hàm làm mờ ảnh là áp dụng một bộ lọc trung bình (mean filter) lên từng pixel của ảnh. Bộ lọc này sử dụng một ma trận kernel có kích thước xác định (ví dụ: 5x5) để tính giá trị trung bình của các pixel xung quanh. Công thức và phương pháp được tham khảo từ tài liệu \cite{geeksforgeeks_convolution_kernels}.
+
+Quá trình thực hiện bao gồm:
+\begin{itemize}
+	\item Tạo một kernel với các giá trị bằng nhau (box blur), sao cho tổng các phần tử trong kernel bằng 1.
+	\item Thêm padding vào ảnh gốc để đảm bảo rằng các pixel ở biên vẫn có đủ vùng lân cận để áp dụng kernel. Padding được thực hiện bằng cách phản chiếu các giá trị pixel ở biên.
+
+	\item Mỗi pixel trong ảnh được thay thế bằng giá trị trung bình của các pixel trong vùng lân cận, được xác định bởi kích thước kernel.
+	\item Các giá trị sau khi tính toán được giới hạn trong phạm vi từ 0 đến 255 để đảm bảo không vượt quá giới hạn hợp lệ.
+\end{itemize}
+
+Lý do chọn box blur:
+\begin{itemize}
+	\item Box blur đơn giản và hiệu quả trong việc làm mờ ảnh, giúp làm mềm các chi tiết nhỏ mà không làm mất cấu trúc tổng thể của ảnh.
+	\item Tính toán dễ dàng và nhanh chóng, phù hợp với các ứng dụng xử lý ảnh cơ bản.
+	\item Box blur tạo ra hiệu ứng làm mịn tổng thể, giúp giảm nhiễu và làm mềm các cạnh sắc nét trong ảnh.
+\end{itemize}
+
+Kết quả là một ảnh mờ, trong đó các chi tiết nhỏ được làm mềm, mang lại hiệu ứng làm mịn tổng thể. Kích thước kernel tăng lên, ảnh sẽ trở nên mờ hơn vì giá trị trung bình được tính trên một vùng lớn hơn, làm giảm độ chi tiết của ảnh. Tuy nhiên, điều này cũng làm tăng thời gian xử lý vì số lượng phép tính cần thực hiện cho mỗi pixel tăng lên theo kích thước của kernel.
+
+\subsection{Làm nét ảnh}
+Ý tưởng của hàm làm nét ảnh là áp dụng một bộ lọc làm nét (sharpening filter) lên từng pixel của ảnh. Bộ lọc này sử dụng một ma trận kernel đặc biệt được tham khảo từ tài liệu \cite{geeksforgeeks_convolution_kernels} để làm nổi bật các cạnh và chi tiết trong ảnh.
+
+Quá trình thực hiện bao gồm:
+\begin{itemize}
+	\item Sử dụng một kernel làm nét, ví dụ:
+	      \[
+		      \begin{bmatrix}
+			      0  & -1 & 0  \\
+			      -1 & 5  & -1 \\
+			      0  & -1 & 0
+		      \end{bmatrix}
+	      \]
+	      Kernel này tăng cường giá trị của pixel trung tâm trong khi giảm giá trị của các pixel xung quanh, giúp làm nổi bật các cạnh và chi tiết.
+	\item Thêm padding vào ảnh gốc để đảm bảo rằng các pixel ở biên vẫn có đủ vùng lân cận để áp dụng kernel. Padding được thực hiện bằng cách thêm các giá trị 0 xung quanh ảnh gốc.
+
+	\item Mỗi pixel trong ảnh được thay thế bằng giá trị tính toán từ ma trận kernel áp dụng lên vùng lân cận của pixel đó.
+	\item Các giá trị sau khi tính toán được giới hạn trong phạm vi từ 0 đến 255 để đảm bảo không vượt quá giới hạn hợp lệ.
+\end{itemize}
+
+Kết quả là một ảnh sắc nét hơn, trong đó các cạnh và chi tiết được làm nổi bật, mang lại hiệu ứng tăng cường độ rõ nét cho ảnh.
+
+Có thể tăng kích thước kernel khi làm nét ảnh, nhưng điều này thường không mang lại hiệu quả tốt. Kernel làm nét thường được thiết kế nhỏ (ví dụ: 3x3) để tập trung vào các chi tiết nhỏ và các cạnh trong ảnh. Nếu tăng kích thước kernel, vùng ảnh bị ảnh hưởng sẽ lớn hơn, dẫn đến việc làm nét không còn tập trung vào các chi tiết nhỏ mà có thể làm biến dạng hoặc mất cân bằng các vùng lớn trong ảnh.
+
+\subsection{Cắt ảnh theo kích thước (cắt ở trung tâm)}
+Ý tưởng của hàm cắt ảnh theo kích thước là lấy một phần ảnh có kích thước xác định, được cắt từ trung tâm của ảnh gốc.
+
+Quá trình thực hiện bao gồm:
+\begin{itemize}
+	\item Xác định tọa độ bắt đầu và kết thúc của vùng cắt dựa trên kích thước ảnh gốc và kích thước vùng cắt được yêu cầu.
+	\item Tọa độ bắt đầu được tính bằng cách lấy khoảng cách từ mép ảnh đến trung tâm, sau đó trừ đi một nửa kích thước vùng cắt.
+	\item Vùng ảnh nằm giữa tọa độ bắt đầu và kết thúc được trích xuất để tạo thành ảnh mới.
+\end{itemize}
+
+Kết quả là một ảnh được cắt từ trung tâm, với kích thước chính xác theo yêu cầu, đảm bảo giữ được các chi tiết quan trọng nhất
+
+\subsection{Cắt ảnh theo khung hình tròn}
+Ý tưởng của hàm cắt ảnh theo khung hình tròn là tạo một mặt nạ hình tròn được nội tiếp trong ảnh gốc, sau đó giữ lại các pixel nằm trong vùng hình tròn và tô đen các pixel bên ngoài.
+
+Quá trình thực hiện bao gồm:
+\begin{itemize}
+	\item Xác định bán kính của hình tròn dựa trên kích thước nhỏ hơn giữa chiều cao và chiều rộng của ảnh (nếu ảnh là hình chữ nhật).
+	\item Tính tọa độ tâm của hình tròn, thường là trung tâm của ảnh gốc.
+	\item Tạo mặt nạ hình tròn bằng công thức:
+	      \[
+		      \text{Mask} = (x - \text{center}_x)^2 + (y - \text{center}_y)^2 \leq \text{radius}^2
+	      \]
+	      Trong đó:
+	      \begin{itemize}
+		      \item \(x, y\): Tọa độ pixel trong ảnh.
+		      \item \(\text{center}_x, \text{center}_y\): Tọa độ tâm của hình tròn.
+		      \item \(\text{radius}\): Bán kính của hình tròn.
+	      \end{itemize}
+	\item Áp dụng mặt nạ lên ảnh gốc, giữ lại các pixel nằm trong hình tròn và tô đen các pixel bên ngoài bằng cách đặt giá trị của chúng về 0.
+\end{itemize}
+
+Kết quả là một ảnh được cắt theo khung hình tròn, giữ lại các chi tiết nằm trong vùng hình tròn và loại bỏ các chi tiết bên ngoài.
+
+\subsection{Cắt ảnh theo khung hình elip chéo nhau}
+Ý tưởng của hàm cắt ảnh theo khung hình elip chéo nhau là tạo hai mặt nạ hình elip, được xoay chéo nhau 90 độ, nghiêng 45 độ so với trục tọa độ, và giữ lại các pixel nằm trong ít nhất một trong hai hình elip. Công thức và phương pháp được tham khảo từ Stack Exchange \cite{stackexchange_ellipse_dimensions}.
+
+Quá trình thực hiện bao gồm:
+\begin{itemize}
+	\item Xác định kích thước của hai hình elip dựa trên tỷ lệ kích thước (\text{ratio}) được cung cấp. Tỷ lệ này kiểm soát độ dài của các trục chính và phụ của hình elip so với kích thước ảnh gốc.
+	\item Tính tọa độ tâm của hình elip, thường là trung tâm của ảnh gốc.
+	\item Tạo hai mặt nạ hình elip bằng cách sử dụng công thức:
+	      \[
+		      \text{Mask}_1 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{\text{ratio} \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{(1 - \text{ratio}) \cdot h^2} \leq 1
+	      \]
+	      \[
+		      \text{Mask}_2 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{(1 - \text{ratio}) \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{\text{ratio} \cdot h^2} \leq 1
+	      \]
+	      Trong đó:
+	      \begin{itemize}
+		      \item \(x, y\): Tọa độ pixel một điểm trên elip.
+		      \item \(\text{center}_x, \text{center}_y\): Tọa độ tâm của hình elip.
+		      \item \(h\): Chiều cao của ảnh.
+		      \item \(\text{ratio}\): Tỷ lệ kiểm soát độ dài trục chính và phụ của hình elip (giá trị mặc định là 0.75).
+	      \end{itemize}
+	\item Kết hợp hai mặt nạ bằng phép toán logic OR (\(|\)) để giữ lại các pixel nằm trong ít nhất một trong hai hình elip.
+	\item Áp dụng mặt nạ lên ảnh gốc, giữ lại các pixel nằm trong vùng hình elip và loại bỏ các pixel bên ngoài bằng cách đặt giá trị của chúng về 0.
+\end{itemize}
+
+\textbf{Giá trị của \text{ratio}:}
+\begin{itemize}
+	\item Có vô số hình elip thỏa điều kiện nằm trong và tiếp xúc với hình vuông. Vậy nên ta có tỷ lệ \text{ratio} nằm trong khoảng \(0 < \text{ratio} < 1\) để kiểm soát tỷ lệ giữa các bán trục của hình elip:
+	      \begin{itemize}
+		      \item Nếu \text{ratio} gần 0.5, hai hình elip sẽ có xu hướng trở thành hình tròn nội tiếp hình vuông. Điều này xảy ra vì khi \text{ratio} tiến gần đến 0.5, các bán trục chính và phụ của hình elip trở nên xấp xỉ nhau. Cụ thể:
+		            \[
+			            \text{Mask}_1 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{0.5 \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{0.5 \cdot h^2} \leq 1
+		            \]
+		            \[
+			            \text{Mask}_2 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{0.5 \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{0.5 \cdot h^2} \leq 1
+		            \]
+		            Khi các hệ số trong công thức trở nên xấp xỉ nhau, cả hai hình elip sẽ biến thành hai hình tròn nội tiếp hình vuông. Kết quả là vùng cắt sẽ trở thành một khung hình tròn duy nhất.
+		      \item Nếu \text{ratio} càng xa 0.5, hai hình elip sẽ trở nên càng hẹp, nổi bật hình dạng elip của chúng.
+	      \end{itemize}
+	\item Nếu \text{ratio} vượt ra ngoài khoảng \(0 < \text{ratio} < 1\):
+	      \begin{itemize}
+		      \item \text{ratio} nhỏ hơn hoặc bằng 0 không hợp lệ, vì không thể tạo hình elip.
+		      \item \text{ratio} lớn hơn 1 sẽ làm hình elip bị biến dạng, không còn phù hợp với mục đích cắt ảnh.
+	      \end{itemize}
+\end{itemize}
+
+Kết quả là một ảnh được cắt theo khung hình elip chéo nhau, tạo hiệu ứng trang trí độc đáo hoặc làm nổi bật vùng trung tâm

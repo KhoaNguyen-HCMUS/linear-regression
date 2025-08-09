@@ -1,0 +1,358 @@
+\section{Mô tả các hàm}
+\subsection{Các thư viện cần thiết}
+Trong đồ án này, các thư viện chính được sử dụng bao gồm:
+\begin{itemize}
+	\item \textbf{numpy}: Thư viện xử lý ma trận và mảng số học hiệu năng cao, cung cấp các phép tính vector hóa giúp tăng tốc độ tính toán trên dữ liệu lớn.
+	\item \textbf{PIL (Python Imaging Library)}: Thư viện xử lý ảnh, được sử dụng để đọc/ghi các định dạng ảnh phổ biến và thực hiện các thao tác cơ bản với ảnh.
+	\item \textbf{matplotlib}: Thư viện dùng để hiển thị ảnh.
+
+	\item Các thư viện bổ trợ:
+	      \begin{itemize}
+		      \item \texttt{time}: Đo thời gian thực thi
+	      \end{itemize}
+\end{itemize}
+
+\subsection{Hàm \texttt{read\_img(img\_path)}}
+Hàm \texttt{read\_img} có nhiệm vụ đọc hình ảnh từ đường dẫn được truyền vào, sau đó chuyển đổi thành một mảng NumPy 3 chiều đại diện cho ảnh RGB (Nếu ảnh grayscale, nó sẽ được chuyển đổi thành 3 kênh với cùng giá trị). Điều này cho phép máy tính xử lý hình ảnh dễ dàng hơn.
+
+\subsection{Hàm \texttt{show\_img(img\_2d)}}
+Hàm \texttt{show\_img} có chức năng hiển thị ảnh từ mảng numpy 2D sử dụng thư viện \texttt{matplotlib}. Để giúp hình ảnh hiển thị rõ ràng và không bị che bởi các trục tọa độ, lệnh \texttt{plt.axis('off')} được sử dụng để tắt hiển thị trục.
+
+\subsection{Hàm \texttt{save\_img(img, img\_path)}}
+Hàm \texttt{save\_img} có nhiệm vụ lưu hình ảnh đã xử lý vào đường dẫn được chỉ định. Mảng chứa các pixel ảnh được chuyển thành ảnh sử dụng hàm \texttt{Image.fromarray()} của thư viện PIL. Hình ảnh được lưu dưới dạng file ảnh, giúp người dùng lưu trữ kết quả xử lý.
+
+\subsection{Hàm \texttt{increase\_brightness(img\_array, brightness)}}
+Hàm \texttt{increase\_brightness} có nhiệm vụ điều chỉnh độ sáng của hình ảnh. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Điều chỉnh độ sáng:}
+	      Giá trị độ sáng \texttt{brightness} được cộng vào từng phần tử trong mảng hình ảnh. Để đảm bảo không xảy ra lỗi tràn số khi cộng giá trị, mảng ảnh được chuyển sang kiểu dữ liệu \texttt{np.int16} trước khi thực hiện phép toán.
+
+	\item \textbf{Cắt giá trị pixel:}
+	      Sau khi điều chỉnh độ sáng, các giá trị pixel có thể vượt quá phạm vi hợp lệ (0 đến 255). Hàm \texttt{np.clip()} được sử dụng để giới hạn giá trị pixel trong khoảng từ 0 đến 255, ngăn chặn các giá trị không hợp lệ.
+
+	\item \textbf{Chuyển đổi lại về kiểu dữ liệu phù hợp:}
+	      Cuối cùng, mảng đã được điều chỉnh được chuyển đổi về kiểu \texttt{np.uint8} để đảm bảo không có lỗi xảy ra.
+
+\end{enumerate}
+
+
+
+\subsection{Hàm \texttt{adjust\_contrast(img\_array, contrast\_factor)}}
+Hàm \texttt{adjust\_contrast} có nhiệm vụ điều chỉnh độ tương phản của hình ảnh. Với contrast factor > 1 thì tăng độ tương phản, < 1 thì giảm độ tương phản. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Kiểm tra factor truyền vào:}
+	      Nếu \texttt{contrast\_factor} bằng 0 hoặc bằng 1, hàm sẽ trả về mảng ảnh gốc mà không thay đổi gì.
+	      Nếu \texttt{contrast\_factor} nhỏ hơn 0, hàm sẽ tự động điều chỉnh về giá trị tuyệt đối của nó.
+
+	\item \textbf{Tính giá trị trung bình:}
+	      Giá trị trung bình của các pixel trong mảng hình ảnh được tính bằng hàm \texttt{np.mean()} để làm điểm tham chiếu cho việc điều chỉnh độ tương phản.
+
+	\item \textbf{Điều chỉnh độ tương phản:}
+	      Các pixel trong mảng hình ảnh được điều chỉnh bằng công thức:
+	      \[
+		      \text{adjusted} = (\text{img\_array} - \text{mean}) \times \text{contrast\_factor} + \text{mean}
+	      \]
+	      Điều này giúp tăng độ tương phản nếu \texttt{contrast\_factor} > 1 và giảm độ tương phản nếu \texttt{contrast\_factor} < 1.
+
+	\item \textbf{Cắt giá trị pixel:}
+	      Sau khi điều chỉnh độ tương phản, các giá trị pixel có thể vượt quá phạm vi hợp lệ (0 đến 255). Hàm \texttt{np.clip()} được sử dụng để giới hạn giá trị pixel trong khoảng từ 0 đến 255.
+
+	\item \textbf{Chuyển đổi lại về kiểu dữ liệu phù hợp:}
+	      Cuối cùng, mảng đã được điều chỉnh được chuyển đổi về kiểu \texttt{np.uint8} để đảm bảo không có lỗi xảy ra.
+
+\end{enumerate}
+
+
+
+\subsection{Hàm \texttt{flip\_horizontal(img\_array)}}
+Hàm \texttt{flip\_horizontal} có nhiệm vụ lật hình ảnh theo chiều ngang. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Lật ảnh ngang:}
+	      Mảng hình ảnh được đảo ngược thứ tự các cột bằng slicing của NumPy: \texttt{img\_array[:, ::-1, :]}.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{flip\_vertical(img\_array)}}
+Hàm \texttt{flip\_vertical} có nhiệm vụ lật hình ảnh theo chiều dọc. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Lật ảnh dọc:}
+	      Mảng hình ảnh được đảo ngược thứ tự các hàng bằng slicing của NumPy: \texttt{img\_array[::-1, :, :]}.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{convert\_to\_grayscale(img\_array)}}
+Hàm \texttt{convert\_to\_grayscale} có nhiệm vụ chuyển đổi hình ảnh RGB thành ảnh xám. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tính giá trị xám:}
+	      Giá trị xám của từng pixel được tính bằng công thức:
+	      \[
+		      \text{Gray} = 0.299 \times R + 0.587 \times G + 0.114 \times B
+	      \]
+
+	\item \textbf{Tạo ảnh xám:}
+	      Mảng ảnh xám được tạo bằng cách nhân giá trị xám với mặt nạ và xếp chồng các kênh màu.
+
+	\item \textbf{Chuyển đổi kiểu dữ liệu:}
+	      Mảng ảnh xám được chuyển đổi về kiểu \texttt{np.uint8}, do các hệ số cộng lại bằng 1 nên không cần hàm \texttt{np.clip()} để giới hạn giá trị pixel.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{convert\_to\_sepia(img\_array)}}
+Hàm \texttt{convert\_to\_sepia} có nhiệm vụ áp dụng hiệu ứng màu sepia lên hình ảnh. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tính giá trị sepia:}
+	      Giá trị sepia của từng pixel được tính bằng công thức ma trận sepia:
+	      \[
+		      \text{Sepia\_R} = 0.393 \times R + 0.769 \times G + 0.189 \times B
+	      \]
+	      \[
+		      \text{Sepia\_G} = 0.349 \times R + 0.686 \times G + 0.168 \times B
+	      \]
+	      \[
+		      \text{Sepia\_B} = 0.272 \times R + 0.534 \times G + 0.131 \times B
+	      \]
+
+	\item \textbf{Tạo ảnh sepia:}
+	      Mảng ảnh sepia được tạo bằng cách xếp chồng các kênh màu sepia.
+
+	\item \textbf{Cắt giá trị pixel:}
+	      Các giá trị pixel được giới hạn trong khoảng từ 0 đến 255 bằng hàm \texttt{np.clip()}.
+
+	\item \textbf{Chuyển đổi kiểu dữ liệu:}
+	      Mảng ảnh sepia được chuyển đổi về kiểu \texttt{np.uint8}.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{apply\_blur(img\_array, kernel\_size)}}
+Hàm \texttt{apply\_blur} có nhiệm vụ làm mờ hình ảnh bằng cách áp dụng bộ lọc trung bình (mean filter). Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tạo kernel làm mờ:}
+	      Kernel được tạo bằng hàm \texttt{np.ones()} với kích thước \texttt{kernel\_size} và được chuẩn hóa bằng cách chia tổng các phần tử trong kernel.
+
+	\item \textbf{Thêm padding vào ảnh:}
+	      Để đảm bảo rằng các pixel ở biên vẫn có đủ vùng lân cận để áp dụng kernel, ảnh được thêm padding bằng hàm \texttt{np.pad()} với chế độ \texttt{reflect}. Chế độ này làm cho giá trị padding được điền bằng cách phản chiếu các giá trị biên của mảng.
+
+	\item \textbf{Khởi tạo mảng kết quả:}
+	      Một mảng mới \texttt{blurred\_img} có cùng kích thước với ảnh gốc được khởi tạo để lưu trữ kết quả làm mờ. Mảng này được khởi tạo với kiểu dữ liệu \texttt{np.float32} để đảm bảo độ chính xác trong quá trình tính toán.
+	\item \textbf{Áp dụng kernel lên từng pixel:}
+	      Quá trình áp dụng kernel để làm mờ ảnh được thực hiện bằng cách tính giá trị trung bình của vùng lân cận từng pixel. Các bước chi tiết như sau:
+
+	      \begin{enumerate}
+
+
+		      \item \textbf{Duyệt qua từng kênh màu:}
+		            Vòng lặp đầu tiên duyệt qua từng kênh màu (R, G, B) của ảnh gốc.
+
+		      \item \textbf{Duyệt qua từng pixel:}
+		            Vòng lặp tiếp theo duyệt qua từng pixel trong ảnh. Với mỗi pixel tại vị trí \((i, j)\), vùng lân cận của pixel đó được xác định bằng cách lấy một phần của ảnh đã được thêm padding. Vùng lân cận này có kích thước bằng kích thước kernel.
+
+		      \item \textbf{Tính giá trị trung bình:}
+		            Giá trị trung bình của vùng lân cận được tính bằng cách nhân từng phần tử trong vùng lân cận với kernel và sau đó tính tổng bằng hàm \texttt{np.sum()}. Kết quả được lưu vào vị trí tương ứng trong mảng \texttt{blurred\_img}.
+
+		      \item \textbf{Lặp lại cho tất cả các pixel:}
+		            Quá trình trên được lặp lại cho tất cả các pixel trong ảnh và tất cả các kênh màu.
+
+		      \item \textbf{Giới hạn giá trị pixel:}
+		            Sau khi tính toán, các giá trị trong mảng \texttt{blurred\_img} được giới hạn trong khoảng từ 0 đến 255 bằng hàm \texttt{np.clip()} để đảm bảo giá trị hợp lệ.
+
+
+
+	      \end{enumerate}
+	\item \textbf{Chuyển đổi kiểu dữ liệu:}
+	      Cuối cùng, mảng kết quả được chuyển đổi về kiểu \texttt{np.uint8} để phù hợp với định dạng ảnh.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{sharpen\_image(img\_array)}}
+Hàm \texttt{sharpen\_image} có nhiệm vụ làm nét hình ảnh bằng cách áp dụng bộ lọc làm nét (sharpening filter). Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Kiểm tra kích thước vùng cắt:}
+	      Nếu kích thước vùng cắt to hơn kích thước ảnh gốc, hàm sẽ trả về ảnh gốc mà không thay đổi gì.
+
+	\item \textbf{Tạo kernel làm nét:}
+	      Kernel làm nét được định nghĩa trước, ví dụ:
+	      \[
+		      \begin{bmatrix}
+			      0  & -1 & 0  \\
+			      -1 & 5  & -1 \\
+			      0  & -1 & 0
+		      \end{bmatrix}
+	      \]
+
+	\item \textbf{Thêm padding vào ảnh:}
+	      Để đảm bảo rằng các pixel ở biên vẫn có đủ vùng lân cận để áp dụng kernel, ảnh được thêm padding bằng hàm \texttt{np.pad()} với chế độ \texttt{constant}. Chế độ này làm cho giá trị padding được điền bằng 0.
+
+	\item \textbf{Khởi tạo mảng kết quả:}
+	      Một mảng mới \texttt{sharpened} có cùng kích thước với ảnh gốc được khởi tạo để lưu trữ kết quả làm nét. Mảng này được khởi tạo với kiểu dữ liệu \texttt{float} để đảm bảo độ chính xác trong quá trình tính toán.
+
+	\item \textbf{Áp dụng kernel lên từng pixel:}
+	      Quá trình áp dụng kernel để làm nét ảnh được thực hiện bằng cách tính giá trị mới của từng pixel dựa trên vùng lân cận của nó. Các bước chi tiết như sau:
+
+	      \begin{enumerate}
+
+
+		      \item \textbf{Duyệt qua từng pixel:}
+		            Vòng lặp đầu tiên duyệt qua từng pixel trong ảnh. Với mỗi pixel tại vị trí \((y, x)\), vùng lân cận của pixel đó được xác định bằng cách lấy một phần của ảnh đã được thêm padding. Vùng lân cận này có kích thước bằng kích thước kernel (3x3 trong trường hợp này).
+
+		      \item \textbf{Duyệt qua từng kênh màu:}
+		            Vòng lặp tiếp theo duyệt qua từng kênh màu (R, G, B) của ảnh gốc. Với mỗi kênh màu, giá trị mới của pixel được tính bằng cách nhân từng phần tử trong vùng lân cận với kernel và sau đó tính tổng bằng hàm \texttt{np.sum()}.
+
+		      \item \textbf{Lưu kết quả:}
+		            Giá trị mới của pixel sau khi tính toán được lưu vào vị trí tương ứng trong mảng \texttt{sharpened}.
+
+		      \item \textbf{Lặp lại cho tất cả các pixel:}
+		            Quá trình trên được lặp lại cho tất cả các pixel trong ảnh và tất cả các kênh màu.
+
+
+
+	      \end{enumerate}
+
+	\item \textbf{Giới hạn giá trị pixel:}
+	      Sau khi tính toán, các giá trị trong mảng \texttt{sharpened} được giới hạn trong khoảng từ 0 đến 255 bằng hàm \texttt{np.clip()} để đảm bảo giá trị hợp lệ.
+
+	\item \textbf{Chuyển đổi kiểu dữ liệu:}
+	      Cuối cùng, mảng kết quả được chuyển đổi về kiểu \texttt{np.uint8} để phù hợp với định dạng ảnh.
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{crop\_center(img\_array, crop\_height, crop\_width)}}
+Hàm \texttt{crop\_center} có nhiệm vụ cắt hình ảnh theo kích thước được chỉ định, với vùng cắt nằm ở trung tâm của ảnh gốc. Nếu cắt hình vuông thì chiều cao và chiều rộng của vùng cắt sẽ bằng nhau. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tính toán tọa độ vùng cắt:}
+	      Tọa độ bắt đầu và kết thúc của vùng cắt được tính dựa trên kích thước ảnh gốc (\texttt{h} và \texttt{w}) và kích thước vùng cắt (\texttt{crop\_height} và \texttt{crop\_width}). Công thức cụ thể như sau:
+
+	      \[
+		      \text{start\_y} = \frac{\text{h} - \text{crop\_height}}{2}
+	      \]
+	      \[
+		      \text{start\_x} = \frac{\text{w} - \text{crop\_width}}{2}
+	      \]
+
+	      \[
+		      \text{end\_y} = \text{start\_y} + \text{crop\_height}
+	      \]
+	      \[
+		      \text{end\_x} = \text{start\_x} + \text{crop\_width}
+	      \]
+
+	      Trong đó:
+	      - \texttt{start\_y} và \texttt{start\_x} là tọa độ bắt đầu của vùng cắt.
+	      - \texttt{end\_y} và \texttt{end\_x} là tọa độ kết thúc của vùng cắt.
+
+	\item \textbf{Cắt ảnh:}
+	      Vùng ảnh nằm giữa tọa độ bắt đầu (\texttt{start\_y}, \texttt{start\_x}) và kết thúc (\texttt{end\_y}, \texttt{end\_x}) được trích xuất để tạo thành ảnh mới. Quá trình này được thực hiện bằng slicing của NumPy:
+	      \[
+		      \text{cropped\_img} = \text{img\_array}[\text{start\_y}:\text{end\_y}, \text{start\_x}:\text{end\_x}, :]
+	      \]
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{crop\_circle(img\_array)}}
+Hàm \texttt{crop\_circle} có nhiệm vụ cắt hình ảnh theo khung hình tròn nội tiếp trong ảnh gốc. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tính toán bán kính và tâm hình tròn:}
+	      \begin{itemize}
+		      \item Bán kính của hình tròn được tính bằng kích thước nhỏ hơn giữa chiều cao (\texttt{h}) và chiều rộng (\texttt{w}) của ảnh, chia đôi:
+		            \[
+			            \text{radius} = \frac{\min(\text{h}, \text{w})}{2}
+		            \]
+		      \item Tâm của hình tròn được xác định là trung tâm của ảnh gốc:
+		            \[
+			            \text{center\_y} = \frac{\text{h}}{2}, \quad \text{center\_x} = \frac{\text{w}}{2}
+		            \]
+	      \end{itemize}
+
+	\item \textbf{Tạo mặt nạ hình tròn:}
+	      \begin{itemize}
+		      \item Mặt nạ hình tròn được tạo bằng công thức Euclid, xác định các pixel nằm trong hình tròn:
+		            \[
+			            \text{Mask} = (x - \text{center\_x})^2 + (y - \text{center\_y})^2 \leq \text{radius}^2
+		            \]
+		      \item Trong đó:
+		            \begin{itemize}
+			            \item \texttt{x} và \texttt{y} là các mảng tọa độ được tạo bằng hàm \texttt{np.ogrid[:h, :w]}.
+			            \item \texttt{Mask} là một mảng boolean, với giá trị \texttt{True} cho các pixel nằm trong hình tròn và \texttt{False} cho các pixel bên ngoài.
+		            \end{itemize}
+	      \end{itemize}
+
+	\item \textbf{Áp dụng mặt nạ lên ảnh:}
+	      \begin{itemize}
+		      \item Một mảng mới \texttt{circular\_img} có cùng kích thước với ảnh gốc được khởi tạo để lưu trữ kết quả.
+		      \item Vòng lặp qua từng kênh màu (R, G, B) của ảnh gốc:
+		            \[
+			            \text{circular\_img}[:, :, c] = \text{img\_array}[:, :, c] \times \text{Mask}
+		            \]
+		      \item Các pixel nằm ngoài hình tròn (giá trị \texttt{False} trong \texttt{Mask}) được đặt về 0, giữ lại chỉ các pixel nằm trong hình tròn.
+	      \end{itemize}
+
+\end{enumerate}
+
+\subsection{Hàm \texttt{crop\_ellipse(img\_array, ratio)}}
+Hàm \texttt{crop\_ellipse} có nhiệm vụ cắt hình ảnh theo khung hình elip chéo nhau. Quá trình thực hiện bao gồm các bước sau:
+
+\begin{enumerate}
+
+	\item \textbf{Tính toán tỷ lệ và tâm hình elip:}
+	      \begin{itemize}
+		      \item Tỷ lệ \texttt{ratio} kiểm soát độ dài trục chính và phụ của hình elip. Giá trị \texttt{ratio} nằm trong khoảng từ 0.5 đến 1.
+		      \item Tâm của hình elip được xác định là trung tâm của ảnh gốc:
+		            \[
+			            \text{center\_y} = \frac{\text{h}}{2}, \quad \text{center\_x} = \frac{\text{w}}{2}
+		            \]
+	      \end{itemize}
+
+	\item \textbf{Tạo hai mặt nạ hình elip:}
+	      \begin{itemize}
+		      \item Hai mặt nạ hình elip được tạo bằng công thức toán học được tham khảo từ \cite{stackexchange_ellipse_dimensions}:
+		            \[
+			            \text{Mask}_1 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{\text{ratio} \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{(1 - \text{ratio}) \cdot h^2} \leq 1
+		            \]
+		            \[
+			            \text{Mask}_2 = \frac{(x + y - \text{center}_x - \text{center}_y)^2}{(1 - \text{ratio}) \cdot h^2} + \frac{(x - y - \text{center}_x + \text{center}_y)^2}{\text{ratio} \cdot h^2} \leq 1
+		            \]
+		      \item Trong đó:
+		            \begin{itemize}
+			            \item \texttt{x} và \texttt{y} là các mảng tọa độ được tạo bằng hàm \texttt{np.ogrid[:h, :w]}.
+			            \item \texttt{Mask}\_1 và \texttt{Mask}\_2 là các mảng boolean, với giá trị \texttt{True} cho các pixel nằm trong hình elip và \texttt{False} cho các pixel bên ngoài.
+		            \end{itemize}
+	      \end{itemize}
+
+	\item \textbf{Kết hợp mặt nạ:}
+	      \begin{itemize}
+		      \item Hai mặt nạ được kết hợp bằng phép toán logic OR (\texttt{|}) để giữ lại các pixel nằm trong ít nhất một trong hai hình elip:
+		            \[
+			            \text{Mask} = \text{Mask}_1 \, | \, \text{Mask}_2
+		            \]
+	      \end{itemize}
+
+	\item \textbf{Áp dụng mặt nạ lên ảnh:}
+	      \begin{itemize}
+		      \item Một mảng mới \texttt{elliptical\_image} có cùng kích thước với ảnh gốc được khởi tạo để lưu trữ kết quả.
+		      \item Vòng lặp qua từng kênh màu (R, G, B) của ảnh gốc:
+		            \[
+			            \text{elliptical\_image}[:, :, c] = \text{img\_array}[:, :, c] \times \text{Mask}
+		            \]
+		      \item Các pixel nằm ngoài hình elip (giá trị \texttt{False} trong \texttt{Mask}) được đặt về 0, giữ lại chỉ các pixel nằm trong hình elip.
+	      \end{itemize}
+
+\end{enumerate}
