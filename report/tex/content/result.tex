@@ -1,143 +1,150 @@
 \section{Kết quả}
-Kết quả của đồ án được thể hiện qua các hình ảnh sau đây. Kích thước ảnh gốc là 512 x 512 pixel.
-
-\subsection{Ảnh gốc}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/512.jpg}
-	\caption{Ảnh gốc}
-	\label{fig:original}
-\end{figure}
-
-\subsection{Thay đổi độ sáng}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_bright_asc.png}
-	\caption{Ảnh tăng sáng nếu nhập vào số dương (50) }
-	\label{fig:bright}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_bright_desc.jpg}
-	\caption{Ảnh giảm sáng nếu nhập vào số âm (-50)}
-	\label{fig:dark}
-\end{figure}
-
-\subsection{Thay đổi độ tương phản}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_contrast_asc.png}
-	\caption{Ảnh tăng độ tương phản nếu nhập vào số lớn hơn 1 (1.5)}
-	\label{fig:contrast_up}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_contrast_desc.jpg}
-	\caption{Ảnh giảm độ tương phản nếu nhập vào số nhỏ hơn 1 (0.5)}
-	\label{fig:contrast_down}
-\end{figure}
-
-\subsection{Ảnh lật ngang}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_flip_horizontal.png}
-	\caption{Ảnh lật ngang}
-	\label{fig:flip_horizontal}
-\end{figure}
-
-\subsection{Ảnh lật dọc}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_flip_vertical.png}
-	\caption{Ảnh lật dọc}
-	\label{fig:flip_vertical}
-\end{figure}
-
-\subsection{Chuyển đổi sang ảnh xám}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_grayscale.png}
-	\caption{Ảnh chuyển sang ảnh xám}
-	\label{fig:gray}
-\end{figure}
-
-\subsection{Chuyển đổi sang ảnh sepia}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_sepia.png}
-	\caption{Ảnh chuyển sang ảnh sepia}
-	\label{fig:sepia}
-\end{figure}
-
-\subsection{Làm mờ ảnh}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_blur3.png}
-	\caption{Ảnh làm mờ với kernel 3x3}
-	\label{fig:blur}
-\end{figure}
-
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_blur5.png}
-	\caption{Ảnh làm mờ với kernel 5x5}
-	\label{fig:blur}
-\end{figure}
-
-\subsection{Làm sắt nét ảnh}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_sharpened.png}
-	\caption{Ảnh làm sắt nét với kernel 3x3}
-	\label{fig:sharpen}
-\end{figure}
-
-\subsection{Cắt ảnh theo kích thước trung tâm}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_crop_center.png}
-	\caption{Ảnh cắt theo kích thước trung tâm (200 x 200 pixel)}
-	\label{fig:crop_center}
-\end{figure}
-
-\subsection{Cắt ảnh theo khung hình tròn}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_crop_circle.png}
-	\caption{Ảnh cắt theo khung hình tròn}
-	\label{fig:crop_circle}
-\end{figure}
-
-\subsection{Cắt ảnh theo khung 2 hình elip chéo nhau}
-\begin{figure}[H]
-	\centering
-	\includegraphics[width=0.5\textwidth]{images/res/512_crop_ellipse.png}
-	\caption{Ảnh cắt theo khung 2 hình elip chéo nhau (ratio = 0.75)}
-	\label{fig:crop_ellipse}
-\end{figure}
-
-
-\subsection{Thời gian chạy}
+Các biến sau đây sẽ được sử dụng để thể hiện các đặc trưng trong bộ dữ liệu:
 \begin{table}[H]
 	\centering
-	\caption{Thời gian chạy của các thuật toán xử lý ảnh}
-	\label{tab:execution_time}
-	\begin{tabular}{|l|c|}
+	\begin{tabular}{|c|l|}
 		\hline
-		\textbf{Thuật toán}                      & \textbf{Thời gian chạy (giây)} \\ \hline
-		Thay đổi độ sáng                         & < 1                            \\ \hline
-		Thay đổi độ tương phản                   & < 1                            \\ \hline
-		Lật ảnh ngang                            & < 1                            \\ \hline
-		Lật ảnh dọc                              & < 1                            \\ \hline
-		Chuyển đổi sang ảnh xám                  & < 1                            \\ \hline
-		Chuyển đổi sang ảnh sepia                & < 1                            \\ \hline
-		Làm mờ ảnh (kernel 3x3)                  & 5.32                           \\ \hline
-		Làm mờ ảnh (kernel 5x5)                  & 8.05                           \\ \hline
-		Làm sắt nét ảnh                          & < 1                            \\ \hline
-		Cắt ảnh theo kích thước trung tâm        & < 1                            \\ \hline
-		Cắt ảnh theo khung hình tròn             & < 1                            \\ \hline
-		Cắt ảnh theo khung 2 hình elip chéo nhau & < 1                            \\ \hline
+		\textbf{Ký hiệu} & \textbf{Mô tả đặc trưng}                                  \\
+		\hline
+		$F_1$            & Hours Studied (Số giờ học tập)                            \\
+		$F_2$            & Previous Scores (Điểm số trước đó)                        \\
+		$F_3$            & Extracurricular Activities (Hoạt động ngoại khóa)         \\
+		$F_4$            & Sleep Hours (Số giờ ngủ)                                  \\
+		$F_5$            & Sample Question Papers Practiced (Số lượng đề thi đã làm) \\
+		\hline
+	\end{tabular}
+	\caption{Quy ước ký hiệu cho các đặc trưng trong mô hình}
+\end{table}
+\subsection{Yêu cầu 1: Phân tích khám phá dữ liệu}
+Đã thực hiện phân tích khám phá dữ liệu theo các bước đã nêu trong phần ý tưởng thực hiện. Các kết quả thu được bao gồm:
+\begin{itemize}
+	\item Đã khám phá tổng quan, kiểm tra kiểu dữ liệu, giá trị duy nhất, giá trị thiếu của các đặc trưng trong bộ dữ liệu.
+	\item Đã phân tích phân phối của các thuộc tính đầu vào và đầu ra bằng biểu đồ histogram, boxplot.
+	\item Đã xác định mối tương quan giữa các thuộc tính bằng ma trận hệ số tương quan và biểu đồ heatmap.
+\end{itemize}
+
+\subsection{Yêu cầu 2a: Mô hình với 5 đặc trưng}
+Đã xây dựng mô hình hồi quy tuyến tính với 5 đặc trưng. Công thức mô hình được thể hiện như sau:
+$$\text{Student Performance} = (2.852)*F_1 + (1.018)*F_2 + (0.604)*F_3 + (0.474)*F_4 + (0.192)*F_5 + (-33.969)$$
+
+Giá trị MSE trên tập kiểm tra là 4.0925, cho thấy mô hình có hiệu suất tốt.
+
+\subsection{Yêu cầu 2b: Mô hình với 1 đặc trưng}
+
+Để xác định đặc trưng đơn lẻ tối ưu, đã thực hiện đánh giá từng đặc trưng bằng k-fold cross-validation với $k=5$. Kết quả như sau:
+
+\begin{table}[htbp]
+	\centering
+	\caption{MSE từng fold cho từng đặc trưng}
+	\resizebox{\textwidth}{!}{%  % Này sẽ thu nhỏ bảng vừa với chiều rộng của trang
+		\begin{tabular}{|l|c|c|c|c|c|c|}
+			\hline
+			\textbf{Đặc trưng}               & \textbf{Fold 1} & \textbf{Fold 2} & \textbf{Fold 3} & \textbf{Fold 4} & \textbf{Fold 5} & \textbf{Avg MSE} \\
+			\hline
+			Hours Studied                    & 313.8764        & 315.5051        & 322.2938        & 319.8258        & 318.4813        & 317.9965         \\
+			\hline
+			Previous Scores                  & 59.5340         & 60.8386         & 59.8392         & 61.1274         & 59.1825         & 60.1043          \\
+			\hline
+			Extracurricular Activities       & 360.0943        & 368.3405        & 375.3853        & 370.7093        & 365.4462        & 367.9951         \\
+			\hline
+			Sleep Hours                      & 359.3012        & 368.5612        & 375.3237        & 369.6954        & 364.7625        & 367.5288         \\
+			\hline
+			Sample Question Papers Practiced & 360.0332        & 367.4404        & 374.3134        & 371.0052        & 365.3577        & 367.6300         \\
+			\hline
+		\end{tabular}%
+	}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{MSE trung bình của các mô hình 1 đặc trưng}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{STT} & \textbf{Mô hình với 1 đặc trưng} & \textbf{MSE} \\
+		\hline
+		1            & Hours Studied                    & 317.9965     \\
+		\hline
+		2            & Previous Scores                  & 60.1043      \\
+		\hline
+		3            & Extracurricular Activities       & 367.9951     \\
+		\hline
+		4            & Sleep Hours                      & 367.5288     \\
+		\hline
+		5            & Sample Question Papers Practiced & 367.6300     \\
+		\hline
 	\end{tabular}
 \end{table}
+
+Đặc trưng \textbf{Previous Scores} đạt MSE thấp nhất (60.1043), tốt hơn đáng kể so với các đặc trưng khác. Sau khi huấn luyện mô hình với đặc trưng này trên toàn bộ tập huấn luyện, thu được công thức hồi quy:
+$$\text{Student Performance} = (1.011)*F_2 + (-14.989)$$
+
+MSE trên tập kiểm tra với mô hình đặc trưng tốt nhất là 58.8882.
+
+\subsubsection{Yêu cầu 2c:  Sinh viên tự xây dựng/thiết kế mô hình, tìm mô hình cho kết quả tốt nhất}
+Trong phần này, 3 mô hình đã được xây dựng dựa trên các đặc trưng đã phân tích ở Yêu cầu 1. Kết quả MSE của từng mô hình như sau:
+
+\begin{table}[htbp]
+	\centering
+	\caption{MSE từng fold cho từng mô hình}
+	\begin{tabular}{|l|c|c|c|c|c|c|}
+		\hline
+		\textbf{Mô hình}            & \textbf{Fold 1} & \textbf{Fold 2} & \textbf{Fold 3} & \textbf{Fold 4} & \textbf{Fold 5} & \textbf{Avg MSE} \\
+		\hline
+		F1 + F2                     & 5.2129          & 5.3706          & 5.3202          & 5.1506          & 4.9509          & 5.2010           \\
+		\hline
+		F1 + F2 + F4 + F5 + F2\^{}2 & 4.2488          & 4.4493          & 4.3918          & 4.3022          & 3.8981          & 4.2580           \\
+		\hline
+		F1*F2                       & 171.8141        & 174.6237        & 184.3341        & 177.7668        & 188.9843        & 179.5046         \\
+		\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[htbp]
+	\centering
+	\caption{MSE trung bình của các mô hình tự thiết kế}
+	\begin{tabular}{|c|c|c|}
+		\hline
+		\textbf{STT} & \textbf{Mô hình}            & \textbf{MSE} \\
+		\hline
+		1            & F1 + F2                     & 5.2010       \\
+		\hline
+		2            & F1 + F2 + F4 + F5 + F2\^{}2 & 4.2580       \\
+		\hline
+		3            & F1*F2                       & 179.5046     \\
+		\hline
+	\end{tabular}
+\end{table}
+
+Mô hình tốt nhất là \textbf{F1 + F2 + F4 + F5 + F2\^{}2} với MSE trung bình thấp nhất (4.2580). Đây là mô hình mở rộng sử dụng hầu hết các đặc trưng (ngoại trừ F3 - Extracurricular Activities) và thêm thành phần phi tuyến F2\^{}2 (bình phương của Previous Scores).
+
+Sau khi huấn luyện lại trên toàn bộ tập huấn luyện, thu được công thức hồi quy:
+$$\text{Student Performance} = (2.853)*F_1 + (1.028)*F_2 + (0.470)*F_4 + (0.193)*F_5 + (-0.000)*F_2^2 + (-33.982)$$
+
+MSE trên tập kiểm tra với mô hình tự thiết kế tốt nhất là 4.2076, cải thiện đáng kể so với mô hình sử dụng một đặc trưng (58.8882) và gần với hiệu suất của mô hình đầy đủ 5 đặc trưng (4.0925).
+
+Kết quả này cho thấy việc loại bỏ đặc trưng không liên quan (Extracurricular Activities) đã giúp tối ưu hiệu suất mô hình hồi quy tuyến tính, với MSE chỉ tăng nhẹ từ 4.0925 lên 4.2076. Sự hy sinh nhỏ về độ chính xác này đổi lại mang đến một mô hình đơn giản hơn, dễ huấn luyện và dự đoán nhanh hơn, đặc biệt hữu ích khi xử lý dữ liệu lớn.
+
+Đáng chú ý, hệ số của thành phần phi tuyến (Previous Scores²) xấp xỉ 0, cho thấy mối quan hệ giữa Previous Scores và Performance Index là tuyến tính, không tồn tại mối quan hệ phi tuyến đáng kể. Điều này cũng được xác nhận bởi mô hình tương tác đơn thuần (F1*F2) có hiệu suất kém (MSE=179.5046), cho thấy mối quan hệ giữa các đặc trưng và biến mục tiêu phần lớn là tuyến tính.
+
+\subsection{Kết luận}
+Từ kết quả thu được của các mô hình đã xây dựng và đánh giá, có thể rút ra một số kết luận quan trọng:
+
+\begin{itemize}
+	\item \textbf{Tính phù hợp của hồi quy tuyến tính:} MSE thấp của các mô hình cho thấy hồi quy tuyến tính là phương pháp phù hợp cho bài toán dự đoán Performance Index. Điều này được khẳng định thêm khi hệ số của thành phần phi tuyến (Previous Scores²) xấp xỉ 0.
+
+	\item \textbf{Tầm quan trọng của việc lựa chọn đặc trưng:} Khả năng dự đoán của mô hình phụ thuộc mạnh vào việc lựa chọn đúng đặc trưng quan trọng. Previous Scores có ảnh hưởng lớn nhất (MSE=60.1043 khi dùng đơn lẻ), tiếp theo là Hours Studied.
+
+	\item \textbf{Giảm thiểu đặc trưng không liên quan:} Việc loại bỏ Extracurricular Activities (F3) chỉ làm giảm nhẹ độ chính xác của mô hình, nhưng lại tăng tính hiệu quả của việc giảm chiều dữ liệu.
+
+	\item \textbf{Mối quan hệ tuyến tính giữa các biến:} Hệ số gần bằng 0 của thành phần phi tuyến chứng tỏ mối quan hệ giữa các đặc trưng và biến mục tiêu phần lớn là tuyến tính. Mô hình tương tác đơn thuần (F1*F2) có hiệu suất kém (MSE=179.5046) cũng xác nhận điều này.
+
+	\item \textbf{Hiệu quả của cross-validation:} Phương pháp k-fold cross-validation cho thấy độ ổn định của các mô hình qua các fold khác nhau, đặc biệt là mô hình F1 + F2 + F4 + F5 + F2² có độ dao động MSE thấp (từ 3.8981 đến 4.4493).
+
+	\item \textbf{Đánh đổi giữa độ chính xác và hiệu suất:} Mặc dù loại bỏ một số đặc trưng có thể làm tăng nhẹ MSE (giảm độ chính xác), nhưng mô hình đơn giản hơn sẽ có thời gian huấn luyện và dự đoán nhanh hơn, đặc biệt quan trọng khi làm việc với bộ dữ liệu lớn. Ví dụ, mô hình chỉ sử dụng F1 + F2 có MSE = 5.2010, cao hơn một chút so với mô hình đầy đủ nhưng đơn giản hơn nhiều và vẫn cho kết quả dự đoán chấp nhận được.
+\end{itemize}
+
+Kết quả nghiên cứu cho thấy mô hình hồi quy tuyến tính với bốn đặc trưng chính (Hours Studied, Previous Scores, Sleep Hours, và Sample Question Papers Practiced) đạt hiệu suất tối ưu trong việc dự đoán Performance Index của học sinh. Mô hình này vừa đơn giản, dễ giải thích, vừa có độ chính xác cao, phù hợp cho các ứng dụng thực tiễn trong lĩnh vực giáo dục.
+
+Trong trường hợp yêu cầu tốc độ xử lý cao với dữ liệu lớn, có thể cân nhắc sử dụng mô hình chỉ với hai đặc trưng F1 + F2, chấp nhận giảm nhẹ độ chính xác để đổi lấy hiệu suất tính toán tốt hơn. Sự đánh đổi này là quan trọng trong các ứng dụng thực tế khi thời gian phản hồi là yếu tố then chốt.
+
+Nghiên cứu này cũng khẳng định tầm quan trọng của phân tích khám phá dữ liệu (EDA) trước khi xây dựng mô hình, giúp hiểu rõ đặc tính của dữ liệu và đưa ra quyết định sáng suốt về việc lựa chọn đặc trưng và thiết kế mô hình phù hợp.
