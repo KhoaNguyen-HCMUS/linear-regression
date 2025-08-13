@@ -18,9 +18,11 @@ Trong đồ án này, các thư viện chính được sử dụng bao gồm:
 	\item \textbf{dtypes\_table(df)}: Trả về tên cột và kiểu dữ liệu của từng cột trong DataFrame.
 	\item \textbf{uniques\_table(df)}: Thống kê số lượng giá trị duy nhất của mỗi cột, sắp xếp theo thứ tự giảm dần.
 	\item \textbf{missing\_table(df)}: Thống kê số lượng và tỷ lệ phần trăm giá trị thiếu (NaN) trong mỗi cột.
+	\item \textbf{duplicates\_table(df)}: Thống kê số lượng bản ghi trùng lặp trong DataFrame.
 	\item \textbf{sample\_values(df, k)}: Lấy $k$ giá trị không null đầu tiên của mỗi cột, hiển thị dưới dạng bảng.
 	\item \textbf{head\_tail(df, n)}: Trả về $n$ dòng đầu và $n$ dòng cuối của DataFrame.
-	\item \textbf{eda\_overview(X, y)}: Thực hiện tổng hợp EDA ở mức metadata cho cả tập đặc trưng $X$ và biến mục tiêu $y$.
+	\item \textbf{remove\_duplicates(X\_df, y\_series)}: Loại bỏ các bản ghi trùng lặp trong DataFrame và Series, trả về DataFrame và Series đã loại bỏ trùng lặp.
+	\item \textbf{eda\_overview(X, y)}: Thực hiện tổng hợp EDA ở mức metadata cho cả tập đặc trưng \texttt{X} và biến mục tiêu \texttt{y}.
 	\item \textbf{plot\_histograms(df, bins, exclude)}: Vẽ histogram cho các cột số, loại trừ các cột chỉ định.
 	\item \textbf{plot\_countplot(df, col)}: Vẽ countplot cho một cột phân loại.
 	\item \textbf{plot\_scatter\_vs\_target(df, features, target)}: Vẽ scatter plot giữa từng đặc trưng số và biến mục tiêu.
@@ -88,7 +90,17 @@ Trong đồ án này, các thư viện chính được sử dụng bao gồm:
 	\caption{Số lượng và tỷ lệ phần trăm giá trị thiếu}
 \end{table}
 
-Do các dữ liệu không có giá trị thiếu, ta có thể tiến hành phân tích EDA mà không cần xử lý dữ liệu thiếu.
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|}
+		\hline
+		\textbf{n\_duplicates} & \textbf{pct\_duplicates} \\ \hline
+		103                    & 1.144                    \\ \hline
+	\end{tabular}
+	\caption{Số lượng và tỷ lệ phần trăm dòng trùng lặp}
+\end{table}
+
+Phân tích cho thấy có 103 dòng trùng lặp trong tập dữ liệu, chiếm 1,144\% tổng số dòng. Mặc dù tỷ lệ này không cao, nhưng để đảm bảo chất lượng phân tích và độ chính xác của mô hình, các bản ghi trùng lặp này đã được loại bỏ trước khi tiến hành các phân tích tiếp theo. Việc loại bỏ dữ liệu trùng lặp giúp tránh tình trạng các mẫu trùng lặp được đánh trọng số quá cao trong quá trình huấn luyện mô hình, từ đó nâng cao tính đại diện và độ tin cậy của mô hình hồi quy tuyến tính được xây dựng.
 
 \subsubsection{Phân tích đơn biến}
 Để thực hiện phân tích đơn biến, chúng ta sẽ xem xét từng đặc trưng một cách riêng biệt và lựa chọn các biểu đồ phù hợp để trực quan hóa phân phối của chúng. Các biểu đồ được sử dụng ở phần này bao gồm histogram, countplot:
